@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="INFO">
     <Appenders>
-        <Console name="console" target="SYSTEM_OUT">
-            <PatternLayout pattern="[%-5level] %logger{0} %msg%n" />
-        </Console>
+        <File name="Maze_Runner_Log_File" fileName="logs/maze_runner_log_file.log">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n</Pattern>
+            </PatternLayout>
+        </File>
     </Appenders>
 
     <Loggers>
         <Root level="info">
-            <AppenderRef ref="console" />
+            <AppenderRef ref="Maze_Runner_Log_File" />
         </Root>
     </Loggers>
 </Configuration>

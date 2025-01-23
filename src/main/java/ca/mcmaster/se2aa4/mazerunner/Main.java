@@ -1,7 +1,6 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,15 +13,19 @@ public class Main {
     private static final Logger logger = LogManager.getLogger();
 
     public static void main(String[] args) {
+
         logger.info("** Starting Maze Runner");
+
 
         CommandLineParser parser = new DefaultParser();
         CommandLine commandLine = null;
 
+        String mazeFile = null;
+        String pathToCheck = null;
         try {
             // Try to get the maze file, otherwise catch exception
             commandLine = parser.parse(parseInput(), args);
-            String mazeFile = null;
+            mazeFile = null;
             if (commandLine.hasOption('i')) {
                 mazeFile = commandLine.getOptionValue('i');
             }
@@ -53,7 +56,7 @@ public class Main {
     }
 
     /**
-     * Parse the user input to find the desired maze file path
+     * Parse the user input to find the desired maze file path and the path to check
      * @return the parsed options that users have entered
      */
     public static Options parseInput(){
