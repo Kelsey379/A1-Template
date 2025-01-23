@@ -3,6 +3,8 @@ package ca.mcmaster.se2aa4.mazerunner;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+import ca.mcmaster.se2aa4.mazerunner.wip.MapPosition;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -50,8 +52,27 @@ public class Main {
                 }
                 System.out.print(System.lineSeparator());
             }
+
+            logger.info ("Received input path: " + pathToCheck);
+            String inputPath = PathInput.canonizedPath(pathToCheck);
+            logger.info("Canonized input path: " + inputPath);
+
         } catch (Exception e) {
             logger.error("/!\\ An error has occured /!\\");
+        }
+
+        try{
+            Maze maze = new Maze(mazeFile);
+
+            MapPosition startPosition = maze.getStartPosition();
+            MapPosition endPosition = maze.getEndPosition();
+
+            System.out.println("Start Position: (" + startPosition.x() + ", " + startPosition.y() + ")");
+            System.out.println("End Position: (" + endPosition.x() + ", " + endPosition.y() + ")");
+
+        } catch (Exception e){
+            logger.error("/!\\ An error has occured /!\\" + e.getMessage());
+            e.printStackTrace();
         }
 
         logger.info("**** Computing path");
