@@ -2,6 +2,7 @@ package ca.mcmaster.se2aa4.mazerunner;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,6 +29,9 @@ public class Main {
             mazeFile = null;
             if (commandLine.hasOption('i')) {
                 mazeFile = commandLine.getOptionValue('i');
+            }
+            if (commandLine.hasOption('p')) {
+                pathToCheck  = commandLine.getOptionValue('p');
             }
 
             logger.info("**** Reading the maze from file " + mazeFile);
@@ -65,6 +69,10 @@ public class Main {
         Option mazeFilePath = new Option("i", true, "Path to the file containing the maze");
         mazeFilePath.setRequired(true);
         options.addOption(mazeFilePath);
+
+        Option path = new Option("p", true, "Path to be checked");
+        path.setRequired(true);
+        options.addOption(path);
 
         return options;
     }
