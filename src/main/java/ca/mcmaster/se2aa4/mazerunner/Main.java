@@ -3,8 +3,6 @@ package ca.mcmaster.se2aa4.mazerunner;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
-import ca.mcmaster.se2aa4.mazerunner.wip.MapPosition;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,6 +23,7 @@ public class Main {
 
         String mazeFile = null;
         String pathToCheck = null;
+        String isEmptyRow = "";
         try {
             // Try to get the maze file, otherwise catch exception
             commandLine = parser.parse(parseInput(), args);
@@ -40,50 +39,45 @@ public class Main {
             BufferedReader reader = new BufferedReader(new FileReader(mazeFile));
             String line;
 
-            //Note: I have decided to leave these System.out.print statements as they are not irrelevant at this point
-            // These are in use for indicating which file is being read, but this will be replaced as features are implemented
-            while ((line = reader.readLine()) != null) {
-                for (int idx = 0; idx < line.length(); idx++) {
-                    if (line.charAt(idx) == '#') {
-                        System.out.print("WALL ");
-                    } else if (line.charAt(idx) == ' ') {
-                        System.out.print("PASS ");
-                    }
-                }
-                System.out.print(System.lineSeparator());
-            }
+            // This code will be used to confirm the input path later
+            // It has been commented for now as the full functionality has yet to be implemented
 
-            logger.info ("Received input path: " + pathToCheck);
-            String inputPath = PathInput.canonizedPath(pathToCheck);
-            logger.info("Canonized input path: " + inputPath);
+//            logger.info ("Received input path: " + pathToCheck);
+//            String inputPath = PathInput.canonizedPath(pathToCheck);
+//            logger.info("Canonized input path: " + inputPath);
 
         } catch (Exception e) {
-            logger.error("/!\\ An error has occured /!\\");
+            logger.error("/!\\ An error has occurred /!\\");
         }
 
         try{
             Maze maze = new Maze(mazeFile);
 
+            // Get the start and end positions and log them for information purposes (helps with debugging)
             MapPosition startPosition = maze.getStartPosition();
             MapPosition endPosition = maze.getEndPosition();
 
-            System.out.println("Start Position: (" + startPosition.x() + ", " + startPosition.y() + ")");
-            System.out.println("End Position: (" + endPosition.x() + ", " + endPosition.y() + ")");
+            //These are used to confirm the start and end positions as needed
+//            logger.info("Start Position: (" + startPosition.x() + ", " + startPosition.y() + ")");
+//            logger.info("End Position: (" + endPosition.x() + ", " + endPosition.y() + ")");
 
+            // Try check for empty paths, if they exist print the output to exit the maze
+            Boolean emptyRowExists = maze.emptyExists();
+            if(emptyRowExists) {
+                isEmptyRow = maze.checkEmptyRow();
+                System.out.println(isEmptyRow);
+            }
         } catch (Exception e){
-            logger.error("/!\\ An error has occured /!\\" + e.getMessage());
-            e.printStackTrace();
+            logger.error("/!\\ An error has occurred /!\\" + e.getMessage());
         }
-
-        logger.info("**** Computing path");
-        logger.error("PATH NOT COMPUTED");
-        logger.info("** End of MazeRunner");
+        if (isEmptyRow == "") {
+            logger.info("**** Computing path");
+            logger.error("PATH NOT COMPUTED");
+            logger.info("** End of MazeRunner");
+        }
     }
 
-    /**
-     * Parse the user input to find the desired maze file path and the path to check
-     * @return the parsed options that users have entered
-     */
+    // Parse the user input to find the maze file and input that will be checked
     public static Options parseInput(){
         Options options = new Options();
 
@@ -92,7 +86,7 @@ public class Main {
         options.addOption(mazeFilePath);
 
         Option path = new Option("p", true, "Path to be checked");
-        path.setRequired(true);
+        path.setRequired(false);
         options.addOption(path);
 
         return options;

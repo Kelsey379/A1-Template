@@ -1,7 +1,5 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
-import ca.mcmaster.se2aa4.mazerunner.wip.MapPosition;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -17,32 +15,32 @@ public class Maze {
     public Maze(String mazeFile) throws Exception{
         BufferedReader reader = new BufferedReader(new FileReader(mazeFile));
         String line;
-//        line = reader.readLine();
+        int nonEmptyLineLength = -1;
 
         while ((line = reader.readLine()) != null) {
             List<Boolean> mazeLine = new ArrayList<>();
-            for (int idx = 0; idx < line.length(); idx++) {
-                if (line.charAt(idx) == '#') {
-                    mazeLine.add(false);
-                    System.out.print("false ");
-                } else if (line.charAt(idx) == ' ') {
-                    mazeLine.add(true);
-                    System.out.print("true ");
+            if (line.trim().isEmpty()) {
+                if (nonEmptyLineLength != -1) {
+                    for (int i = 0; i < nonEmptyLineLength; i++) {
+                        mazeLine.add(true);
+                    }
+                }
+            } else {
+                nonEmptyLineLength = line.length();
+                for (int idx = 0; idx < line.length(); idx++) {
+                    if (line.charAt(idx) == '#') {
+                        mazeLine.add(false);
+                    } else if (line.charAt(idx) == ' ') {
+                        mazeLine.add(true);
+                    }
                 }
             }
-
-// TO DO: fix this so that it will work with an empty row
-//            if (isEmpty) {
-//                for (int i = 0; i<mazeLine.size(); i++) {
-//                    mazeLine.set(i, true);
-//                }
-//            }
             maze.add(mazeLine);
-            System.out.println(System.lineSeparator());
         }
+
     }
 
-
+    // Locate the maze starting point
     public static MapPosition getStartPosition() throws Exception {
         for (int i = 0; i<maze.size(); i++ ) {
             if (maze.get(i).get(0)) {
@@ -62,6 +60,7 @@ public class Maze {
         Maze.startPosition = startPosition;
     }
 
+    // Find the exit point for the maze
     public static MapPosition getEndPosition() throws Exception{
         boolean foundEnd = false;
         for (int j = 0; j<maze.size(); j++ ){
@@ -76,6 +75,30 @@ public class Maze {
         }
         throw new Exception("Maze has no exit points");
     }
+
+    // For MVP, check for empty rows, if empty return the forward path to reach the exit
+    public String checkEmptyRow() {
+        for (List<Boolean> row : maze) {
+            if (row.stream().allMatch(Boolean.TRUE::equals)) {
+                StringBuilder pathForwards = new StringBuilder();
+                for (int i = 0; i < row.size(); i++) {
+                    pathForwards.append("F");
+                }
+                return pathForwards.toString();
+            }
+
+        }
+        return "";
+    }
+
+    //Check if there is an empty row
+     public Boolean emptyExists(){
+        String pathOut = checkEmptyRow();
+        if (pathOut == "") {
+            return false;
+        }
+        return true;
+     }
 
     public static void setEndPosition(MapPosition endPosition) {
         Maze.endPosition = endPosition;
