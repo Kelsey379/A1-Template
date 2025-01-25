@@ -39,27 +39,11 @@ public class Main {
             BufferedReader reader = new BufferedReader(new FileReader(mazeFile));
             String line;
 
-            // This code will be used to confirm the input path later
-            // It has been commented for now as the full functionality has yet to be implemented
-
-//            logger.info ("Received input path: " + pathToCheck);
-//            String inputPath = PathInput.canonizedPath(pathToCheck);
-//            logger.info("Canonized input path: " + inputPath);
-
-        } catch (Exception e) {
-            logger.error("/!\\ An error has occurred /!\\");
-        }
-
-        try{
             Maze maze = new Maze(mazeFile);
 
             // Get the start and end positions and log them for information purposes (helps with debugging)
             MapPosition startPosition = maze.getStartPosition();
             MapPosition endPosition = maze.getEndPosition();
-
-            //These are used to confirm the start and end positions as needed
-//            logger.info("Start Position: (" + startPosition.x() + ", " + startPosition.y() + ")");
-//            logger.info("End Position: (" + endPosition.x() + ", " + endPosition.y() + ")");
 
             // Try check for empty paths, if they exist print the output to exit the maze
             Boolean emptyRowExists = maze.emptyExists();
