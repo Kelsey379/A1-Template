@@ -38,4 +38,36 @@ public class PathInput {
         return pathForAnalysis.toString();
     }
 
+    //go through and factorize the program output
+    public static String factorizePath(String pathInput) {
+        //remove "RL" sequences because they contradict one another
+        String simplified = pathInput.replace("RL", "");
+        if (simplified == null || simplified.isEmpty()) {
+            return "";
+        }
+        StringBuilder outputPath = new StringBuilder();
+        char currentChar = simplified.charAt(0);
+        int count = 1;
+
+        for (int i = 1; i < simplified.length(); i++) {
+            if (simplified.charAt(i) == currentChar) {
+                count++;
+            } else {
+                if (count > 1) {
+                    outputPath.append(count);
+                }
+                outputPath.append(currentChar);
+                currentChar = simplified.charAt(i);
+                count = 1;
+            }
+        }
+
+        if (count > 1) {
+            outputPath.append(count);
+        }
+        outputPath.append(currentChar);
+
+        return outputPath.toString();
+    }
+
 }
