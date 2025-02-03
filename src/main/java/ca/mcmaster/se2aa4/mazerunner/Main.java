@@ -24,15 +24,13 @@ public class Main {
         String mazeFile = null;
         String pathToCheck = null;
         String isEmptyRow = "";
+
         try {
             // Try to get the maze file, otherwise catch exception
             commandLine = parser.parse(parseInput(), args);
             mazeFile = null;
             if (commandLine.hasOption('i')) {
                 mazeFile = commandLine.getOptionValue('i');
-            }
-            if (commandLine.hasOption('p')) {
-                pathToCheck  = commandLine.getOptionValue('p');
             }
 
             logger.info("**** Reading the maze from file " + mazeFile);
@@ -45,29 +43,41 @@ public class Main {
             MapPosition startPosition = maze.getStartPosition();
             MapPosition endPosition = maze.getEndPosition();
 
-            // Try check for empty paths, if they exist print the output to exit the maze
-            Boolean emptyRowExists = maze.emptyExists();
-            if(emptyRowExists) {
-                isEmptyRow = maze.checkEmptyRow();
-                System.out.println(isEmptyRow);
-            }
-
-            if (isEmptyRow.isEmpty()) {
-                System.out.println("**** Parsing maze with right-hand rule method");
+            if (commandLine.hasOption('p')) {
                 ParseMaze parseMaze = new ParseMaze(maze, startPosition.x(), startPosition.y(), startPosition.direction(), new RightHandMethod());
 
-                parseMaze.solveMaze();
+                pathToCheck  = commandLine.getOptionValue('p');
+                System.out.println(pathToCheck);
+                System.out.println(PathInput.canonizedPath(pathToCheck));
+                CheckPath.checkPath(parseMaze, maze, pathToCheck);
+                System.out.println("Path checked to be true - output: " + CheckPath.checkPath(parseMaze, maze, pathToCheck));
+            } else{
+                // Try check for empty paths, if they exist print the output to exit the maze
+                Boolean emptyRowExists = maze.emptyExists();
+                if(emptyRowExists) {
+                    isEmptyRow = maze.checkEmptyRow();
+                    System.out.println(isEmptyRow);
+                }
 
-                System.out.println("Path to exit is " + parseMaze.getPath());
+                if (isEmptyRow.isEmpty()) {
+                    System.out.println("**** Parsing maze with right-hand rule method");
+                    ParseMaze parseMaze = new ParseMaze(maze, startPosition.x(), startPosition.y(), startPosition.direction(), new RightHandMethod());
+
+                    parseMaze.solveMaze();
+                    PathInput pathInput = new PathInput();
+
+                    System.out.println("Path to exit is " + parseMaze.getPath());
+                    System.out.println("Factorized output: " + PathInput.factorizePath(parseMaze.getPath()));
+                    if (isEmptyRow == "") {
+                        logger.info("**** Computing path");
+                        logger.error("PATH NOT COMPUTED");
+                        logger.info("** End of MazeRunner");
+                    }
+                }
             }
 
         } catch (Exception e){
             logger.error("/!\\ An error has occurred /!\\" + e.getMessage());
-        }
-        if (isEmptyRow == "") {
-            logger.info("**** Computing path");
-            logger.error("PATH NOT COMPUTED");
-            logger.info("** End of MazeRunner");
         }
     }
 
