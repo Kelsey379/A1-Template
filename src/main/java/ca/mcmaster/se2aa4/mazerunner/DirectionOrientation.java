@@ -8,15 +8,13 @@ public class DirectionOrientation {
         EAST,
         WEST;
 
-
-        //these fields are to be filled in for the MVP version of the project
         public Direction rightTurn() {
             if (this == NORTH) return EAST;
             if (this == EAST) return SOUTH;
             if (this == SOUTH) return WEST;
             if (this == WEST) return NORTH;
             else{
-                throw new UnsupportedOperationException("Direction Right Turn is not implemented yet");
+                throw new UnsupportedOperationException("Direction not accepted");
             }
         }
 
@@ -26,7 +24,7 @@ public class DirectionOrientation {
             if (this == SOUTH) return EAST;
             if (this == WEST) return SOUTH;
             else{
-                throw new UnsupportedOperationException("Direction Left Turn is not implemented yet");
+                throw new UnsupportedOperationException("Direction not accepted");
             }
         }
 

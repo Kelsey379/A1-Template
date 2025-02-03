@@ -1,14 +1,19 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
-public record MapPosition(int x, int y) {
+import static ca.mcmaster.se2aa4.mazerunner.DirectionOrientation.Direction.*;
 
-    public MapPosition move(DirectionOrientation direction){
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+public record MapPosition(int x, int y, DirectionOrientation.Direction direction) {
 
     public MapPosition addPosition(MapPosition newPosition){
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new MapPosition(this.x + newPosition.x(), this.y + newPosition.y(), this.direction);
     }
 
+    public MapPosition turnRight() {
+      return new MapPosition(x, y, direction.rightTurn());
+    }
+
+    public MapPosition turnLeft() {
+        return new MapPosition(x, y, direction.leftTurn());
+    }
 }
 
