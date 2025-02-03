@@ -51,6 +51,16 @@ public class Main {
                 isEmptyRow = maze.checkEmptyRow();
                 System.out.println(isEmptyRow);
             }
+
+            if (isEmptyRow.isEmpty()) {
+                System.out.println("**** Parsing maze with right-hand rule method");
+                ParseMaze parseMaze = new ParseMaze(maze, startPosition.x(), startPosition.y(), startPosition.direction(), new RightHandMethod());
+
+                parseMaze.solveMaze();
+
+                System.out.println("Path to exit is " + parseMaze.getPath());
+            }
+
         } catch (Exception e){
             logger.error("/!\\ An error has occurred /!\\" + e.getMessage());
         }

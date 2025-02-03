@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Maze {
 
@@ -11,6 +12,18 @@ public class Maze {
 
     private static MapPosition startPosition;
     private static MapPosition endPosition;
+    private static DirectionOrientation.Direction defaultDirection;
+
+    public boolean isWall(int x, int y) {
+        boolean isWall = !maze.get(y).get(x);
+        System.out.println("output from maze isWall method: " + isWall);
+        System.out.println("coordinates for next x: " + x + " y: " + y);
+        return isWall;
+    }
+
+    public boolean isInBounds (int x, int y) {
+        return x >= 0 && x < maze.getFirst().size() && y >= 0 && y < maze.size();
+    }
 
     public Maze(String mazeFile) throws Exception{
         BufferedReader reader = new BufferedReader(new FileReader(mazeFile));
@@ -23,6 +36,7 @@ public class Maze {
                 if (nonEmptyLineLength != -1) {
                     for (int i = 0; i < nonEmptyLineLength; i++) {
                         mazeLine.add(true);
+                        System.out.print("TRUE  ");
                     }
                 }
             } else {
@@ -30,11 +44,14 @@ public class Maze {
                 for (int idx = 0; idx < line.length(); idx++) {
                     if (line.charAt(idx) == '#') {
                         mazeLine.add(false);
+                        System.out.print("FALSE ");
                     } else if (line.charAt(idx) == ' ') {
                         mazeLine.add(true);
+                        System.out.print("TRUE  ");
                     }
                 }
             }
+            System.out.println();
             maze.add(mazeLine);
         }
 
@@ -43,12 +60,16 @@ public class Maze {
     // Locate the maze starting point
     public static MapPosition getStartPosition() throws Exception {
         for (int i = 0; i<maze.size(); i++ ) {
-            if (maze.get(i).get(0)) {
-                startPosition = new MapPosition(0,i);
+            if (maze.get(i).getFirst()) {
+                defaultDirection = DirectionOrientation.Direction.EAST;
+                startPosition = new MapPosition(0,i, defaultDirection);
+                System.out.println("Start " +  startPosition);
                 return startPosition;
             }
-            if (maze.get(i).get(maze.get(i).size() -1)){
-                startPosition = new MapPosition(maze.get(i).size() -1,i);
+            if (maze.get(i).getLast()){
+                defaultDirection = DirectionOrientation.Direction.WEST;
+                startPosition = new MapPosition(maze.get(i).size() -1,i, defaultDirection);
+                System.out.println("Start " +  startPosition);
                 return startPosition;
             }
         }
@@ -64,12 +85,14 @@ public class Maze {
     public static MapPosition getEndPosition() throws Exception{
         boolean foundEnd = false;
         for (int j = 0; j<maze.size(); j++ ){
-            if(maze.get(j).get(0) && !(startPosition.x() == 0 && startPosition.y() == j)) {
-                endPosition = new MapPosition(0, j);
+            if(maze.get(j).getFirst() && !(startPosition.x() == 0 && startPosition.y() == j)) {
+                endPosition = new MapPosition(0, j, defaultDirection);
+                System.out.println("End " +  endPosition);
                 return endPosition;
             }
   ;          if (maze.get(j).get(maze.get(j).size() - 1) && !(startPosition.x() == maze.get(j).size() - 1 && startPosition.y() == j)) {
-                endPosition = new MapPosition(maze.get(j).size() - 1, j);
+                endPosition = new MapPosition(maze.get(j).size() - 1, j, defaultDirection);
+                System.out.println("End " +  endPosition);
                 return endPosition;
             }
         }
@@ -94,10 +117,7 @@ public class Maze {
     //Check if there is an empty row
      public Boolean emptyExists(){
         String pathOut = checkEmptyRow();
-        if (pathOut == "") {
-            return false;
-        }
-        return true;
+         return !Objects.equals(pathOut, "");
      }
 
     public static void setEndPosition(MapPosition endPosition) {
