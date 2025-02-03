@@ -11,7 +11,6 @@ public class CheckPath {
                 case 'R':
                     parseMaze.turnRight();
                     if (parseMaze.getX() == getEndPosition().x() && parseMaze.getY() == getEndPosition().y()) {
-                        System.out.println("Correct Path Reached!");
                         correct = true;
                         return true;
                     }
@@ -19,7 +18,6 @@ public class CheckPath {
                 case 'L':
                     parseMaze.turnLeft();
                     if (parseMaze.getX() == getEndPosition().x() && parseMaze.getY() == getEndPosition().y()) {
-                        System.out.println("Correct Path Reached!");
                         correct = true;
                         return true;
                     }
@@ -28,14 +26,12 @@ public class CheckPath {
                     if (canMove(parseMaze, maze)){
                         parseMaze.moveForward();
                         if (parseMaze.getX() == getEndPosition().x() && parseMaze.getY() == getEndPosition().y()) {
-                            System.out.println("Correct Path Reached!");
                             correct = true;
                             return true;
                         }
                         break;
                     } else {
                         if(!correct){
-                            System.out.println("Incorrect Path");
                             correct = false;
                             return false;
                         }
@@ -43,13 +39,11 @@ public class CheckPath {
                     break;
                 default:
                     if(!correct){
-                        System.out.println("Incorrect Path");
                         correct = false;
                         return false;
                     }
             }
         }
-        System.out.println("correct Path: " + correct);
         return correct;
     }
 

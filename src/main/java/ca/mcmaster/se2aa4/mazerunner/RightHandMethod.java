@@ -1,7 +1,11 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
+import org.apache.logging.log4j.Logger;
+
 import java.util.HashSet;
 import java.util.Set;
+
+import static ca.mcmaster.se2aa4.mazerunner.Main.logger;
 
 public class RightHandMethod implements SolveMaze {
     private final Set<String> visitedPositions = new HashSet<>();
@@ -11,7 +15,8 @@ public class RightHandMethod implements SolveMaze {
             String currentState = parseMaze.getX() + "," + parseMaze.getY() + "," + parseMaze.getCurrentDirection();
 
             if (visitedPositions.contains(currentState)) {
-                System.out.println("Loop detected! Breaking out...");
+                Logger logger = null;
+                logger.info("Infinite loop detected, breaking out");
                 break;
             }
             visitedPositions.add(currentState);
@@ -32,7 +37,8 @@ public class RightHandMethod implements SolveMaze {
                         if (canMove(parseMaze, maze)) {
                             parseMaze.moveForward();
                         }else {
-                            System.out.println("Breaking ");
+                            Logger logger = null;
+                            logger.info("Infinite loop detected, breaking out");
                             break;
                         }
                     }

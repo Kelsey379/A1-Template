@@ -11,7 +11,7 @@ import org.apache.commons.cli.*;
 
 public class Main {
 
-    private static final Logger logger = LogManager.getLogger();
+    static final Logger logger = LogManager.getLogger();
 
     public static void main(String[] args) {
 
@@ -45,39 +45,36 @@ public class Main {
 
             if (commandLine.hasOption('p')) {
                 ParseMaze parseMaze = new ParseMaze(maze, startPosition.x(), startPosition.y(), startPosition.direction(), new RightHandMethod());
-
                 pathToCheck  = commandLine.getOptionValue('p');
-                System.out.println(pathToCheck);
-                System.out.println(PathInput.canonizedPath(pathToCheck));
+                Boolean emptyRowExists = maze.emptyExists();
                 CheckPath.checkPath(parseMaze, maze, pathToCheck);
-                System.out.println("Path checked to be true - output: " + CheckPath.checkPath(parseMaze, maze, pathToCheck));
+                if(CheckPath.checkPath(parseMaze, maze, pathToCheck)) {
+                    System.out.println("Correct Path");
+                } else {
+                    System.out.println("Incorrect Path");
+                }
             } else{
                 // Try check for empty paths, if they exist print the output to exit the maze
                 Boolean emptyRowExists = maze.emptyExists();
                 if(emptyRowExists) {
                     isEmptyRow = maze.checkEmptyRow();
-                    System.out.println(isEmptyRow);
+                    System.out.println(PathInput.factorizePath(isEmptyRow));
                 }
 
                 if (isEmptyRow.isEmpty()) {
-                    System.out.println("**** Parsing maze with right-hand rule method");
+                    logger.info("**** Parsing maze with right-hand rule method");
                     ParseMaze parseMaze = new ParseMaze(maze, startPosition.x(), startPosition.y(), startPosition.direction(), new RightHandMethod());
-
                     parseMaze.solveMaze();
                     PathInput pathInput = new PathInput();
-
-                    System.out.println("Path to exit is " + parseMaze.getPath());
-                    System.out.println("Factorized output: " + PathInput.factorizePath(parseMaze.getPath()));
-                    if (isEmptyRow == "") {
-                        logger.info("**** Computing path");
-                        logger.error("PATH NOT COMPUTED");
-                        logger.info("** End of MazeRunner");
-                    }
+                    System.out.println(PathInput.factorizePath(parseMaze.getPath()));
                 }
             }
 
         } catch (Exception e){
             logger.error("/!\\ An error has occurred /!\\" + e.getMessage());
+            logger.info("**** Computing path");
+            logger.error("PATH NOT COMPUTED");
+            logger.info("** End of MazeRunner");
         }
     }
 
