@@ -39,7 +39,6 @@ public class Main {
 
             Maze maze = new Maze(mazeFile);
 
-            // Get the start and end positions and log them for information purposes (helps with debugging)
             MapPosition startPosition = maze.getStartPosition();
             MapPosition endPosition = maze.getEndPosition();
 
