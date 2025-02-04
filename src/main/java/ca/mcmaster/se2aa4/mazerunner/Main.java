@@ -35,12 +35,9 @@ public class Main {
 
             logger.info("**** Reading the maze from file " + mazeFile);
             BufferedReader reader = new BufferedReader(new FileReader(mazeFile));
-            String line;
 
             Maze maze = new Maze(mazeFile);
-
             MapPosition startPosition = maze.getStartPosition();
-            MapPosition endPosition = maze.getEndPosition();
 
             if (commandLine.hasOption('p')) {
                 ParseMaze parseMaze = new ParseMaze(maze, startPosition.x(), startPosition.y(), startPosition.direction(), new RightHandMethod());

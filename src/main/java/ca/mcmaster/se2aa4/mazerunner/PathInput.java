@@ -7,14 +7,6 @@ import java.util.regex.Pattern;
 
 public class PathInput {
 
-    private static List<Character> path = new ArrayList<>();
-    public void Path(){
-
-    }
-
-
-    //TODO: make sure this can account for spaces in the input, it currently does not
-
     public static String canonizedPath(String pathInput){
 
         pathInput = pathInput.replaceAll("\\s+", "");

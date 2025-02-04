@@ -3,7 +3,6 @@ import static ca.mcmaster.se2aa4.mazerunner.Maze.getEndPosition;
 
 public class CheckPath {
 
-    //WIP - need to get this to actually break when the path is incorrect
     public static boolean checkPath(ParseMaze parseMaze, Maze maze, String path) throws Exception {
         boolean correct = false;
         for (char action: path.toCharArray()) {

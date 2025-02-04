@@ -5,8 +5,6 @@ import org.apache.logging.log4j.Logger;
 import java.util.HashSet;
 import java.util.Set;
 
-import static ca.mcmaster.se2aa4.mazerunner.Main.logger;
-
 public class RightHandMethod implements SolveMaze {
     private final Set<String> visitedPositions = new HashSet<>();
     @Override
