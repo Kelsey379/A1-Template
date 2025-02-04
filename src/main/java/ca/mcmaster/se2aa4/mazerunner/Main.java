@@ -46,8 +46,14 @@ public class Main {
                 ParseMaze parseMaze = new ParseMaze(maze, startPosition.x(), startPosition.y(), startPosition.direction(), new RightHandMethod());
                 pathToCheck  = commandLine.getOptionValue('p');
                 Boolean emptyRowExists = maze.emptyExists();
-                CheckPath.checkPath(parseMaze, maze, pathToCheck);
-                if(CheckPath.checkPath(parseMaze, maze, pathToCheck)) {
+                boolean isCorrect = CheckPath.checkPath(parseMaze, maze, pathToCheck);
+                if (emptyRowExists) {
+                    if(maze.checkEmptyRow().equals(PathInput.canonizedPath(pathToCheck))) {
+                        System.out.println("Correct Path");
+                    } else {
+                        System.out.println("Incorrect Path");
+                    }
+                }else if(isCorrect) {
                     System.out.println("Correct Path");
                 } else {
                     System.out.println("Incorrect Path");
