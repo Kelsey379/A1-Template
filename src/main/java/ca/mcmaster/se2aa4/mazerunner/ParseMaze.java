@@ -35,13 +35,11 @@ public class ParseMaze {
     }
 
     public void turnRight() {
-        MapPosition nextPos = findNextPosition();
         currentDirection = currentDirection.rightTurn();
         pathTried.append('R');
     }
 
     public void turnLeft() {
-        MapPosition nextPos = findNextPosition();
         currentDirection = currentDirection.leftTurn();
         pathTried.append('L');
     }
@@ -49,10 +47,10 @@ public class ParseMaze {
     //will calculate the next position based on the direction faced
     public MapPosition findNextPosition() {
         return switch (currentDirection) {
-            case NORTH -> new MapPosition(x, y - 1, currentDirection);
-            case SOUTH -> new MapPosition(x, y + 1, currentDirection);
-            case EAST -> new MapPosition(x + 1, y, currentDirection);
-            case WEST -> new MapPosition(x - 1, y, currentDirection);
+            case NORTH -> new MapPosition(x-1, y, currentDirection);
+            case SOUTH -> new MapPosition(x + 1, y, currentDirection);
+            case EAST -> new MapPosition(x, y+1, currentDirection);
+            case WEST -> new MapPosition(x, y-1, currentDirection);
         };
     }
 
@@ -60,7 +58,8 @@ public class ParseMaze {
         if (maze.emptyExists()){
             String pathForwards = maze.checkEmptyRow();
             if (!pathForwards.isEmpty()) {
-                return pathTried.append(pathForwards);
+                pathTried.append(pathForwards);
+                return pathTried;
             }
         }
         MapPosition startPos = Maze.getStartPosition();

@@ -15,40 +15,49 @@ public class Maze {
     private static DirectionOrientation.Direction defaultDirection;
 
     public boolean isWall(int x, int y) {
-        boolean isWall = !maze.get(y).get(x);
+        if (!isInBounds(x, y)) {
+            return true;
+        }
+        boolean isWall = !maze.get(x).get(y);
         return isWall;
     }
 
     public boolean isInBounds (int x, int y) {
-        return x >= 0 && x < maze.getFirst().size() && y >= 0 && y < maze.size();
+        return x >= 0 && x < maze.size() && y >= 0 && y < maze.get(x).size();
     }
 
-    public Maze(String mazeFile) throws Exception{
+    public Maze(String mazeFile) throws Exception {
         BufferedReader reader = new BufferedReader(new FileReader(mazeFile));
         String line;
-        int nonEmptyLineLength = -1;
+        List<String> rawLines = new ArrayList<>();
+        int maxRowLength = 0;
 
         while ((line = reader.readLine()) != null) {
-            List<Boolean> mazeLine = new ArrayList<>();
-            if (line.trim().isEmpty()) {
-                if (nonEmptyLineLength != -1) {
-                    for (int i = 0; i < nonEmptyLineLength; i++) {
-                        mazeLine.add(true);
-                    }
-                }
-            } else {
-                nonEmptyLineLength = line.length();
-                for (int idx = 0; idx < line.length(); idx++) {
-                    if (line.charAt(idx) == '#') {
-                        mazeLine.add(false);
-                    } else if (line.charAt(idx) == ' ') {
-                        mazeLine.add(true);
-                    }
-                }
+            line = line.stripTrailing();
+            if (!line.trim().isEmpty()) {
+                rawLines.add(line);
+                maxRowLength = Math.max(maxRowLength, line.length());
             }
+        }
+        reader.close();
+
+        for (String rawLine : rawLines) {
+            List<Boolean> mazeLine = new ArrayList<>();
+
+            for (int i = 0; i < rawLine.length(); i++) {
+                mazeLine.add(rawLine.charAt(i) == '#' ? false : true);
+            }
+
+            while (mazeLine.size() < maxRowLength) {
+                mazeLine.add(true);
+            }
+
             maze.add(mazeLine);
         }
 
+        for (List<Boolean> row : maze) {
+            System.out.println(row);
+        }
     }
 
     // Locate the maze starting point
@@ -56,12 +65,12 @@ public class Maze {
         for (int i = 0; i<maze.size(); i++ ) {
             if (maze.get(i).getFirst()) {
                 defaultDirection = DirectionOrientation.Direction.EAST;
-                startPosition = new MapPosition(0,i, defaultDirection);
+                startPosition = new MapPosition(i,0, defaultDirection);
                 return startPosition;
             }
             if (maze.get(i).getLast()){
                 defaultDirection = DirectionOrientation.Direction.WEST;
-                startPosition = new MapPosition(maze.get(i).size() -1,i, defaultDirection);
+                startPosition = new MapPosition(i, maze.get(i).size() -1, defaultDirection);
                 return startPosition;
             }
         }
@@ -72,12 +81,12 @@ public class Maze {
     // Find the exit point for the maze
     public static MapPosition getEndPosition() throws Exception{
         for (int j = 0; j<maze.size(); j++ ){
-            if(maze.get(j).getFirst() && !(startPosition.x() == 0 && startPosition.y() == j)) {
-                endPosition = new MapPosition(0, j, defaultDirection);
+            if(maze.get(j).getFirst() && !(startPosition.x() == j && startPosition.y() == 0)) {
+                endPosition = new MapPosition(j, 0, defaultDirection);
                 return endPosition;
             }
-            if (maze.get(j).getLast() && !(startPosition.x() == maze.get(j).size() - 1 && startPosition.y() == j)) {
-                endPosition = new MapPosition(maze.get(j).size() - 1, j, defaultDirection);
+            if (maze.get(j).getLast() && !(startPosition.x() == j && startPosition.y() == maze.get(j).size() -1)) {
+                endPosition = new MapPosition(j, maze.get(j).size() - 1, defaultDirection);
                 return endPosition;
             }
         }
