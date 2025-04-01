@@ -12,6 +12,7 @@ public class MazeTest {
 
     @BeforeEach
     public void setUp() throws Exception {
+        // ARRANGE
         maze = new Maze("src/test/mazeSamples/testMaze.txt");
     }
 
@@ -19,13 +20,15 @@ public class MazeTest {
     public void testCheckEmptyRow() {
         //check for no empty rows
         String path = maze.checkEmptyRow();
+
+        //ASSERT
         assertNotNull(path);
         assertTrue(path.isEmpty());
     }
 
     @Test
     public void testIsWall() {
-
+        // ASSERT
         assertTrue(maze.isWall(0,0));
         assertFalse(maze.isWall(1,1));
     }
@@ -44,8 +47,10 @@ public class MazeTest {
 
     @Test
     public void testEndPosition() throws Exception {
+        // ACT
         MapPosition start = Maze.getStartPosition();
         MapPosition end = Maze.getEndPosition();
+        // ASSERT
         assertEquals(new MapPosition(5,0, DirectionOrientation.Direction.WEST), end);
     }
 
