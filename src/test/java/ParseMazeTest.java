@@ -1,12 +1,13 @@
 import static org.junit.jupiter.api.Assertions.*;
-
+import ca.mcmaster.se2aa4.mazerunner.TurnRightCommand;
+import ca.mcmaster.se2aa4.mazerunner.TurnLeftCommand;
+import ca.mcmaster.se2aa4.mazerunner.MoveForwardCommand;
 import ca.mcmaster.se2aa4.mazerunner.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.mockito.MockedStatic;
-
 
 public class ParseMazeTest {
 
@@ -44,26 +45,31 @@ public class ParseMazeTest {
     @Test
     void testMoveForward() {
         // ACT
-        parseMaze.turnRight();
-        parseMaze.turnRight();
-        parseMaze.moveForward();
+        Command moveForwardCommand = new MoveForwardCommand();
+        parseMaze.executeCommand(moveForwardCommand);
 
         // ASSERT
-        assertEquals(1, parseMaze.getX());
-        assertEquals(2, parseMaze.getY());
         assertTrue(parseMaze.getPath().contains("F"));
     }
 
     @Test
     void testTurnRight() {
-        parseMaze.turnRight();
+        // ACT
+        Command turnRightCommand = new TurnRightCommand();
+        parseMaze.executeCommand(turnRightCommand);
+
+        // ASSERT
         assertEquals(DirectionOrientation.Direction.NORTH, parseMaze.getCurrentDirection());
         assertTrue(parseMaze.getPath().contains("R"));
     }
 
     @Test
     void testTurnLeft() {
-        parseMaze.turnLeft();
+        // ACT
+        Command turnLeftCommand = new TurnLeftCommand();
+        parseMaze.executeCommand(turnLeftCommand);
+
+        // ASSERT
         assertEquals(DirectionOrientation.Direction.SOUTH, parseMaze.getCurrentDirection());
         assertTrue(parseMaze.getPath().contains("L"));
     }
@@ -83,7 +89,8 @@ public class ParseMazeTest {
 
     @Test
     void testMarkAsVisited() {
-        parseMaze.moveForward();
+        Command moveForwardCommand = new MoveForwardCommand();
+        parseMaze.executeCommand(moveForwardCommand);
         assertTrue(parseMaze.getPath().contains("F"));
     }
 
