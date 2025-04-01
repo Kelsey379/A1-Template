@@ -5,23 +5,27 @@ public class CheckPath {
 
     public static boolean checkPath(ParseMaze parseMaze, Maze maze, String path) throws Exception {
         boolean correct = false;
+        Command turnRightCommand = new TurnRightCommand();
+        Command turnLeftCommand = new TurnLeftCommand();
+        Command moveForwardCommand = new MoveForwardCommand();
+
         for (char action: path.toCharArray()) {
             switch (action){
                 case 'R':
-                    parseMaze.turnRight();
+                    parseMaze.executeCommand(turnRightCommand);
                     if (parseMaze.getX() == getEndPosition().x() && parseMaze.getY() == getEndPosition().y()) {
                         return true;
                     }
                     break;
                 case 'L':
-                    parseMaze.turnLeft();
+                    parseMaze.executeCommand(turnLeftCommand);
                     if (parseMaze.getX() == getEndPosition().x() && parseMaze.getY() == getEndPosition().y()) {
                         return true;
                     }
                     break;
                 case 'F':
                     if (canMove(parseMaze, maze)){
-                        parseMaze.moveForward();
+                        parseMaze.executeCommand(moveForwardCommand);
                         if (parseMaze.getX() == getEndPosition().x() && parseMaze.getY() == getEndPosition().y()) {
                             return true;
                         }

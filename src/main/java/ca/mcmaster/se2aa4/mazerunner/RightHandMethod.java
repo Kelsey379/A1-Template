@@ -1,5 +1,6 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.HashSet;
@@ -9,33 +10,36 @@ public class RightHandMethod implements SolveMaze {
     private final Set<String> visitedPositions = new HashSet<>();
     @Override
     public void solveGivenMaze(ParseMaze parseMaze, Maze maze) {
+        final Logger logger = LogManager.getLogger();
+        Command moveForwardCommand = new MoveForwardCommand();
+        Command turnLeftCommand = new TurnLeftCommand();
+        Command turnRightCommand = new TurnRightCommand();
+
         while (!atExit(parseMaze, maze)) {
             String currentState = parseMaze.getX() + "," + parseMaze.getY() + "," + parseMaze.getCurrentDirection();
 
             if (visitedPositions.contains(currentState)) {
-                Logger logger = null;
                 logger.info("Infinite loop detected, breaking out");
                 break;
             }
             visitedPositions.add(currentState);
 
-            parseMaze.turnRight();
+            parseMaze.executeCommand(turnRightCommand);
             if (canMove(parseMaze, maze)) {
-                parseMaze.moveForward();
+                parseMaze.executeCommand(moveForwardCommand);
             } else {
-                parseMaze.turnLeft();
+                parseMaze.executeCommand(turnLeftCommand);
                 if (canMove(parseMaze, maze)) {
-                    parseMaze.moveForward();
+                    parseMaze.executeCommand(moveForwardCommand);
                 } else {
-                    parseMaze.turnLeft();
+                    parseMaze.executeCommand(turnLeftCommand);
                     if (canMove(parseMaze, maze)) {
-                        parseMaze.moveForward();
+                        parseMaze.executeCommand(moveForwardCommand);
                     } else {
-                        parseMaze.turnLeft();
+                        parseMaze.executeCommand(turnLeftCommand);
                         if (canMove(parseMaze, maze)) {
-                            parseMaze.moveForward();
+                            parseMaze.executeCommand(moveForwardCommand);
                         }else {
-                            Logger logger = null;
                             logger.info("Infinite loop detected, breaking out");
                             break;
                         }

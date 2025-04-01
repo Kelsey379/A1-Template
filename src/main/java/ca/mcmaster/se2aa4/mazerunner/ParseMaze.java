@@ -5,12 +5,13 @@ import java.util.Set;
 
 public class ParseMaze {
 
-    private int x, y;
+    static int x;
+    static int y;
     private Maze maze;
     private SolveMaze solve;
-    private DirectionOrientation.Direction currentDirection;
-    private StringBuilder pathTried;
-    private Set<String> visitedPosition;
+    static DirectionOrientation.Direction currentDirection;
+    StringBuilder pathTried;
+    private static Set<String> visitedPosition;
 
     public ParseMaze(Maze maze, int startXPos, int startYPos, DirectionOrientation.Direction startDirection, SolveMaze solve){
         this.x = startXPos;
@@ -22,30 +23,16 @@ public class ParseMaze {
         this.visitedPosition = new HashSet<>();
     }
 
+    public void executeCommand(Command command){
+        command.execute(this);
+    }
+
     public DirectionOrientation.Direction getCurrentDirection () {
         return currentDirection;
     }
 
-    public void moveForward() {
-        MapPosition nextPos = findNextPosition();
-        this.x = nextPos.x();
-        this.y = nextPos.y();
-        pathTried.append('F');
-        markAsVisited();
-    }
-
-    public void turnRight() {
-        currentDirection = currentDirection.rightTurn();
-        pathTried.append('R');
-    }
-
-    public void turnLeft() {
-        currentDirection = currentDirection.leftTurn();
-        pathTried.append('L');
-    }
-
     //will calculate the next position based on the direction faced
-    public MapPosition findNextPosition() {
+    public static MapPosition findNextPosition() {
         return switch (currentDirection) {
             case NORTH -> new MapPosition(x-1, y, currentDirection);
             case SOUTH -> new MapPosition(x + 1, y, currentDirection);
@@ -71,7 +58,7 @@ public class ParseMaze {
         return pathTried;
     }
 
-    private void markAsVisited(){
+    static void markAsVisited(){
         visitedPosition.add(x + "," + y);
     }
 
