@@ -38,6 +38,7 @@ public class Main {
 
             Maze maze = new Maze(mazeFile);
             MapPosition startPosition = maze.getStartPosition();
+            logger.info("**** Start position: " + startPosition);
 
             if (commandLine.hasOption('p')) {
                 ParseMaze parseMaze = new ParseMaze(maze, startPosition.x(), startPosition.y(), startPosition.direction(), new RightHandMethod());
