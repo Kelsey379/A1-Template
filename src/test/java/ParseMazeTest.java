@@ -101,7 +101,7 @@ public class ParseMazeTest {
     }
 
     @Test
-    void testSolveMaze() throws Exception { //double check this test as it sometimes seems less consistent
+    void testSolveMaze() throws Exception {
         // ACT
         Mockito.when(maze.emptyExists()).thenReturn(true);
         String path = "FFRFF";

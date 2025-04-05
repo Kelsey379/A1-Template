@@ -54,10 +54,6 @@ public class Maze {
 
             maze.add(mazeLine);
         }
-
-        for (List<Boolean> row : maze) {
-            System.out.println(row);
-        }
     }
 
     // Locate the maze starting point
