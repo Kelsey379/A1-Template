@@ -36,9 +36,17 @@ public class ParseMazeTest {
     }
 
     @Test
-    void testInitialValues() {
+    void testInitialXValueIs1() {
         assertEquals(1, parseMaze.getX());
+    }
+
+    @Test
+    void testInitialYValueIs1() {
         assertEquals(1, parseMaze.getY());
+    }
+
+    @Test
+    void testInitialDirectionIsWest() {
         assertEquals(DirectionOrientation.Direction.WEST, parseMaze.getCurrentDirection());
     }
 
@@ -53,24 +61,42 @@ public class ParseMazeTest {
     }
 
     @Test
-    void testTurnRight() {
+    void testTurnRightChangeDirection() {
         // ACT
         Command turnRightCommand = new TurnRightCommand();
         parseMaze.executeCommand(turnRightCommand);
 
-        // ASSERT
+        //ASSERT
         assertEquals(DirectionOrientation.Direction.NORTH, parseMaze.getCurrentDirection());
+    }
+
+    @Test
+    void testTurnRightPathContainsR() {
+        // ACT
+        Command turnRightCommand = new TurnRightCommand();
+        parseMaze.executeCommand(turnRightCommand);
+
+        //ASSERT
         assertTrue(parseMaze.getPath().contains("R"));
     }
 
     @Test
-    void testTurnLeft() {
+    void testTurnLeftChangesDirection() {
+        // ACT
+        Command turnLeftCommand = new TurnLeftCommand();
+        parseMaze.executeCommand(turnLeftCommand);
+
+        //ASSERT
+        assertEquals(DirectionOrientation.Direction.SOUTH, parseMaze.getCurrentDirection());
+    }
+
+    @Test
+    void testTurnLeftPathContainsL() {
         // ACT
         Command turnLeftCommand = new TurnLeftCommand();
         parseMaze.executeCommand(turnLeftCommand);
 
         // ASSERT
-        assertEquals(DirectionOrientation.Direction.SOUTH, parseMaze.getCurrentDirection());
         assertTrue(parseMaze.getPath().contains("L"));
     }
 
@@ -95,11 +121,22 @@ public class ParseMazeTest {
     }
 
     @Test
-    void testFindNextPosition() throws Exception {
+    void testFindNextPositionXIs1() throws Exception {
         MapPosition nextPosition = parseMaze.findNextPosition();
         // ASSERT
         assertEquals(1, nextPosition.x());
+    }
+
+    @Test
+    void testFindNextPositionYIs0() throws Exception {
+        MapPosition nextPosition = parseMaze.findNextPosition();
         assertEquals(0, nextPosition.y());
+    }
+
+    @Test
+    void testFindNextPositionDirectionIsWest() throws Exception {
+        MapPosition nextPosition = parseMaze.findNextPosition();
+        // ASSERT
         assertEquals(DirectionOrientation.Direction.WEST, nextPosition.direction());
     }
 }

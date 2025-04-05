@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 public class PathInputTest {
 
     @Test
-    public void testCanonizedPath() {
+    public void testPathConvertedToCanonizedForm() {
         // ARRANGE
         String input = "4R3L2F";
         // ACT
@@ -16,7 +16,7 @@ public class PathInputTest {
     }
 
     @Test
-    public void testFactorizePath() {
+    public void testPathCanBeFactorized() {
         // ARRANGE
         String input = "RRFLLLFR";
         // ACT
@@ -26,7 +26,7 @@ public class PathInputTest {
     }
 
     @Test
-    public void testStraightCorrection() {
+    public void testConvertRightLeftToStraight() {
         // ARRANGE
         String input = "RL";
         // ACT

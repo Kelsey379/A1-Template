@@ -17,26 +17,38 @@ public class MazeTest {
     }
 
     @Test
-    public void testCheckEmptyRow() {
-        //check for no empty rows
+    public void testCheckEmptyRowIsNotNull() {
         String path = maze.checkEmptyRow();
-
-        //ASSERT
+        // ASSERT
         assertNotNull(path);
+    }
+
+    @Test
+    public void testCheckEmptyRowIsEmpty() {
+        String path = maze.checkEmptyRow();
+        // ASSERT
         assertTrue(path.isEmpty());
     }
 
     @Test
-    public void testIsWall() {
-        // ASSERT
-        assertTrue(maze.isWall(0,0));
-        assertFalse(maze.isWall(1,1));
+    public void testIsWallAt00() {
+        assertTrue(maze.isWall(0, 0));
     }
 
     @Test
-    public void testIsInBounds() {
-        assertTrue(maze.isInBounds(0,0));
-        assertFalse(maze.isInBounds(100,100));
+    public void testIsNotWallAt11() {
+        assertFalse(maze.isWall(1, 1));
+    }
+
+    @Test
+    public void testIsInBoundsAt00() {
+        // ASSERT
+        assertTrue(maze.isInBounds(0, 0));
+    }
+
+    @Test
+    public void testIsNotInBoundsAt100100() {
+        assertFalse(maze.isInBounds(100, 100));
     }
 
     @Test
